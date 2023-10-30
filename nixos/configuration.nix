@@ -55,33 +55,6 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
-  ## --- ##
-  ## x11 ##
-  ## --- ##
-  environment.pathsToLink = ["/libexec"];
-  programs.dconf.enable = true;
-  services.xserver = {
-    enable = true;
-    layout = "br";
-    xkbVariant = "";
-    desktopManager = {
-      xterm.enable = false;
-    };
-    displayManager = {
-      defaultSession = "none+i3";
-    };
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-	rofi
-	i3status-rust
-	i3lock
-	nitrogen
-      ];
-    };
-  };
-
   # Configure console keymap
   console.keyMap = "br-abnt2";
 
