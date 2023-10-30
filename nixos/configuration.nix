@@ -101,7 +101,6 @@
     git
     telegram-desktop
     alacritty
-    neovim
     firefox
     flameshot
     home-manager
