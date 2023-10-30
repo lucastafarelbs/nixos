@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sound.nix
+      ./x11-i3.nix
     ];
 
   # Enabling flakes
