@@ -12,6 +12,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ./i3status-rust.nix
   ];
 
   nixpkgs = {
