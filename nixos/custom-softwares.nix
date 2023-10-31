@@ -6,6 +6,8 @@
       telegram-desktop
       alacritty
       flameshot
+      discord
+      dbeaver
     ];
   };
 }
