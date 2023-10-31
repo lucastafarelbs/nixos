@@ -1,9 +1,11 @@
-{ pkgs, configs, ... }:
+{ pkgs, config, ... }:
 {
-  enviroment.systemPackages = with pkgs; [
-    git
-    telegram-desktop
-    alacritty
-    flameshot
-  ];
+  config = {
+    environment.systemPackages = with pkgs; [
+      git
+      telegram-desktop
+      alacritty
+      flameshot
+    ];
+  };
 }
