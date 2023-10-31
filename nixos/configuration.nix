@@ -1,24 +1,20 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+# basic system configs
 { inputs, config, pkgs, callPackage, lib, ... }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
       ./sound.nix
       ./x11-i3.nix
+      ./custom-softwares.nix
     ];
 
   # Enabling flakes
   nix = {
     settings = {
-      # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
-      # Deduplicate and optimize nix store
-      auto-optimise-store = true;
+      auto-optimise-store = true; # Deduplicate and optimize nix store
     };
   };
 
@@ -26,24 +22,16 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "thrive"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.wireless.userControlled.enable = true;
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  # Networking
   networking.networkmanager.enable = true;
+  networking.hostName = "thrive"; # Define your hostname.
 
-  # Set your time zone.
+  # Set time zone.
   time.timeZone = "America/Sao_Paulo";
   time.hardwareClockInLocalTime = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "pt_BR.UTF-8";
     LC_IDENTIFICATION = "pt_BR.UTF-8";
@@ -70,14 +58,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile.:
   environment.systemPackages = with pkgs; [
-    git
-    telegram-desktop
-    alacritty
-    firefox
-    flameshot
     home-manager
   ];
 
