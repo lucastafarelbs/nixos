@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, configs, ... }:
 {
   enviroment.systemPackages = with pkgs; [
     git
