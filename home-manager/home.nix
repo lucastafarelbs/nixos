@@ -11,11 +11,7 @@
   imports = [];
 
   nixpkgs = {
-    overlays = [
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-    ];
+    overlays = [];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
