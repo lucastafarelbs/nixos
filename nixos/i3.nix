@@ -21,7 +21,6 @@
       pkgs.nano
     ];
     windowManager.i3 = {
-      configFile=null;
       enable = true;
       extraPackages = with pkgs; [
         dmenu
