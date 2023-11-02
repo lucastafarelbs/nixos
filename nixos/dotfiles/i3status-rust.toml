@@ -1,0 +1,51 @@
+[theme]
+theme = "bad-wolf"
+
+[icons]
+icons="awesome6"
+[icons.overrides]
+music = "\uf144"
+
+[[block]]
+block = "backlight"
+minimum = 15
+maximum = 100
+
+[[block]]
+block = "memory"
+
+[[block]]
+block = "sound"
+max_vol = 130
+
+[[block]]
+block = "music"
+format = "{$combo.str(max_w:20,rot_interval:0.2) $prev $play $next|}"
+
+[[block]]
+block = "time"
+interval = 5
+format = "$timestamp.datetime(f:'%a %d/%m %R')"
+[[block.click]]
+button = "left"
+cmd = "gsimplecal"
+
+[[block]]
+block = "temperature"
+format = " $icon $average"
+#format_alt = " $icon $min min, $max max, $average avg "
+interval = 5
+chip = "*-isa-*"
+
+[[block]]
+block = "battery"
+device = "BAT0"
+interval = 10
+format = "$icon $percentage"
+
+[[block]]
+block = "custom"
+command = "echo \uf011" # assumes fontawesome icons
+[[block.click]]
+button = "left"
+cmd = "systemctl printf 'suspend\npoweroff\nreboot' | rofi -dmenu "

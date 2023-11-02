@@ -167,7 +167,7 @@ smart_gaps off
 bar {
     font pango:Fira Code, Font Awesome 6 Free
     position bottom
-    status_command i3status-rs ~/.config/i3status-rust/config.toml
+    status_command i3status-rs ./i3status-rust.toml
     colors {
         separator #666666
         background #222222
