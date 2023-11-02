@@ -36,6 +36,38 @@
     userName = "lucastafarelbs";
     userEmail = "lucastafarelbs@gmail.com";
   };
+
+  programs.neovim = {
+    viAlias = true;
+    vimAlias = true;
+  };
+  xsession.windowManager.i3 = {
+    enable = true;
+    config = {
+      bars = [
+        {
+          position = "top";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ./i3status-rust.toml";
+        }
+      ];
+    };
+  };
+
+  programs.i3status-rust = {
+    enable = true;
+    bars = {
+      top = {
+        blocks = [
+         {
+           block = "time";
+           interval = 60;
+           format = "%a %d/%m %k:%M %p";
+         }
+       ];
+      };
+    };
+  };
+
   systemd.user.startServices = "sd-switch";
 
   home.stateVersion = "23.05";

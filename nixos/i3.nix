@@ -16,6 +16,10 @@
     libinput={
       enable = true;
     };
+    excludePackages = with pkgs;[
+      pkgs.xterm
+      pkgs.nano
+    ];
     windowManager.i3 = {
       enable = true;
       configFile = ./dotfiles/i3;
