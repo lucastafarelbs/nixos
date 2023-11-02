@@ -10,6 +10,13 @@
 }: {
   imports = [];
 
+#  home.activation = {
+#    myActivationAction = lib.hm.dag.entryAfter ["writeBoundary"] ''
+#      $DRY_RUN_CMD rm -r $VERBOSE_ARG \
+#          $HOME/.config/i3/config
+#    '';
+#  };
+
   nixpkgs = {
     overlays = [];
     config = {
@@ -46,6 +53,13 @@
     config = null;
   };
 
+  home.file = {
+    ".config/i3/config" = {
+      source = config.lib.file.mkOutOfStoreSymlink (builtins.toPath ./i3);
+      target = ".config/i3/config"; recursive = true;
+    };
+    ".config/i3/i3status-rust.toml".source = config.lib.file.mkOutOfStoreSymlink (builtins.toPath ./i3status-rust.toml);
+  };
 
   systemd.user.startServices = "sd-switch";
 
