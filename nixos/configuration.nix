@@ -1,32 +1,25 @@
-# basic system configs
 { inputs, config, pkgs, callPackage, lib, ... }:
 
 {
   imports =
-    [ 
+    [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./sound.nix
-      ./x11-i3.nix
-      ./custom-softwares.nix
     ];
 
   # Enabling flakes
-  nix = {
-    settings = {
-      experimental-features = "nix-command flakes";
-      auto-optimise-store = true; # Deduplicate and optimize nix store
-    };
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Networking
-  networking.networkmanager.enable = true;
   networking.hostName = "thrive"; # Define your hostname.
+  networking.networkmanager.enable = true;
 
-  # Set time zone.
+  # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
   time.hardwareClockInLocalTime = true;
 
@@ -44,6 +37,36 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
+  ## --- ##
+  ## x11 ##
+  ## --- ##
+  environment.pathsToLink = ["/libexec"];
+  programs.dconf.enable = true;
+  services.xserver = {
+    enable = true;
+    layout = "br";
+    xkbVariant = "";
+    desktopManager = {
+      xterm.enable = false;
+    };
+    displayManager = {
+      defaultSession = "none+i3";
+    };
+    libinput={
+      enable = true;
+    };
+    windowManager.i3 = {
+      enable = true;
+      extraPackages = with pkgs; [
+        dmenu
+	rofi
+	i3status-rust
+	i3lock
+	nitrogen
+      ];
+    };
+  };
+
   # Configure console keymap
   console.keyMap = "br-abnt2";
 
@@ -58,10 +81,32 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile.:
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
+    git
+    telegram-desktop
+    alacritty
+    neovim
+    firefox
+    flameshot
     home-manager
+    discord
+    btop
   ];
 
+
+  # Enabling audio
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+  };
+
   system.stateVersion = "23.05"; # Did you read the comment?
+
 }
