@@ -18,7 +18,7 @@
     };
     windowManager.i3 = {
       enable = true;
-      configFile = ./i3-config;
+      configFile = ./dotfiles/i3;
       extraPackages = with pkgs; [
         dmenu
 	rofi
