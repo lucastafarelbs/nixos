@@ -111,10 +111,10 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # move to another workspace
-bindsym Ctrl+$alt+h workspace next
-bindsym Ctrl+$alt+l workspace prev
-bindsym Ctrl+$alt+1 workspace next
-bindsym Ctrl+$alt+2 workspace prev
+bindsym Ctrl+$alt+l workspace next
+bindsym Ctrl+$alt+h workspace prev
+bindsym Ctrl+$alt+Left workspace next
+bindsym Ctrl+$alt+Right workspace prev
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
