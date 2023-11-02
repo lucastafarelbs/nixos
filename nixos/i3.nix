@@ -21,8 +21,8 @@
       pkgs.nano
     ];
     windowManager.i3 = {
+      configFile=null;
       enable = true;
-      configFile = ./dotfiles/i3;
       extraPackages = with pkgs; [
         dmenu
 	rofi
