@@ -6,7 +6,7 @@
 }: {
 
   #creates symlink of i3status-rust.toml into $HOME/.config/i3
-  home.file.".config/i3/i3status-rust.toml".source = (config.lib.file.mkOutOfStoreSymlink ./i3status-rust.toml);
+  home.file.".config/i3/i3status-rust.toml".source = (config.lib.file.mkOutOfStoreSymlink ./config-files/i3status-rust.toml);
 
   home.packages = with pkgs; [
     killall

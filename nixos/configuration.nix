@@ -10,6 +10,11 @@
   # Enabling flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  fonts.fonts = with pkgs; [
+    font-awesome
+    fira-code
+  ];
+
 
 
   # Bootloader.
