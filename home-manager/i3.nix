@@ -166,8 +166,7 @@
 
 	# gaps ----- #
 	for_window [class=".*"] border pixel 0
-	gaps inner 12
-	smart_gaps off
+	gaps inner 10
 
 	# bar ----- 5
 	bar {

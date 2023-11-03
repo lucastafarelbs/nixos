@@ -28,6 +28,7 @@
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
+    playerctl #control play, pause, next, prev...
   ];
 
   # Enable home-manager and git
@@ -43,6 +44,16 @@
     vimAlias = true;
   };
 
+  # picom = transparency and corner radius
+  services.picom = { 
+    enable = true;
+    inactiveOpacity = 0.85;
+    activeOpacity = 1;
+    settings = { 
+      "corner-radius" = 5;
+    };
+  };
+  
   systemd.user.startServices = "sd-switch";
 
   home.stateVersion = "23.05";
