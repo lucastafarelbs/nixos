@@ -29,6 +29,8 @@
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
     playerctl #control play, pause, next, prev...
+    lshw
+    pciutils
   ];
 
   # Enable home-manager and git

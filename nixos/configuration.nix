@@ -1,11 +1,47 @@
 { inputs, config, pkgs, callPackage, lib, ... }:
 
+let
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload"  ''
+  export __NV_PRIME_RENDER_OFFLOAD=1
+  export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+  export __GLX_VENDOR_LIBRARY_NAME=nvidia
+  export __VK_LAYER_NV_optimus=NVIDIA_only
+  exec "$@"
+  '';
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./i3.nix
     ];
+  # Enable OpenGL
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+  # enabling amdgpu and nvidia
+  services.xserver.videoDrivers = [ "amdgpu" "nvidia"];
+  hardware.nvidia = {
+    # Modesetting is required following nixos docs
+    modesetting.enable = true;
+
+    powerManagement = {
+	enable = true;
+	finegrained = true;
+    };
+    # opensource kernel module (for newer gpus)
+    open = true;
+    prime = {
+      offload.enable = true;
+      offload.enableOffloadCmd = true;
+      nvidiaBusId = "PCI:1:0:0";
+      amdgpuBusId = "PCI:116:0:0";
+    };
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 
   # Enabling flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -68,6 +104,7 @@
     home-manager
     discord
     btop
+    arandr
   ];
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;

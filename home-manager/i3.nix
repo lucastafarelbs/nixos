@@ -116,6 +116,9 @@
 	bindsym $mod+Shift+9 move container to workspace number $ws9
 	bindsym $mod+Shift+0 move container to workspace number $ws10
 
+	workspace 2 output HDMI1-1
+	workspace 3 output HDMI1-1
+
 	# move to another workspace
 	bindsym Ctrl+$alt+l workspace next
 	bindsym Ctrl+$alt+h workspace prev
