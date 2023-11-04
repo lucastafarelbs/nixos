@@ -113,7 +113,7 @@
   
   # Enabling audio
   sound.enable = false;
-  sound.mediaKeys.enable = true;
+  sound.mediaKeys.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

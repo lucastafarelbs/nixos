@@ -53,10 +53,14 @@
   # picom = transparency and corner radius
   services.picom = { 
     enable = true;
+    fade = true;
     inactiveOpacity = 0.85;
     activeOpacity = 1;
     settings = { 
       "corner-radius" = 5;
+      "fade-delta"   = 10;
+      "fade-in-step" = 0.13;
+      "fade-out-step"= 0.13;
     };
   };
   
