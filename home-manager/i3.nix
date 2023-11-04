@@ -11,6 +11,8 @@
   home.packages = with pkgs; [
     killall
     networkmanagerapplet
+    dunst
+    speedcrunch
   ];
 
   xsession.windowManager.i3 = {
@@ -29,9 +31,9 @@
         # not needed
 	# exec --no-startup-id dex --autostart --environment i3
 	# exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+	set $exe        exec --no-startup-id
+	set $exe_always exec_always --no-startup-id
 
-	exec --no-startup-id nm-applet
-	
 	# start a terminal
 	bindsym $mod+Return exec alacritty
 
@@ -80,44 +82,40 @@
 	#bindsym $mod+d focus child
 
 	# Define names for default workspaces for which we configure key bindings later on.
-	# We use variables to avoid repeating the names in multiple places.
-	set $ws1 "1"
-	set $ws2 "2"
-	set $ws3 "3"
-	set $ws4 "4"
-	set $ws5 "5"
-	set $ws6 "6"
-	set $ws7 "7"
-	set $ws8 "8"
-	set $ws9 "9"
-	set $ws10 "10"
-
 	# switch to workspace
-	bindsym $mod+1 workspace number $ws1
-	bindsym $mod+2 workspace number $ws2
-	bindsym $mod+3 workspace number $ws3
-	bindsym $mod+4 workspace number $ws4
-	bindsym $mod+5 workspace number $ws5
-	bindsym $mod+6 workspace number $ws6
-	bindsym $mod+7 workspace number $ws7
-	bindsym $mod+8 workspace number $ws8
-	bindsym $mod+9 workspace number $ws9
-	bindsym $mod+0 workspace number $ws10
+	bindsym $mod+1 workspace number 1
+	bindsym $mod+2 workspace number 2
+	bindsym $mod+3 workspace number 3
+	bindsym $mod+4 workspace number 4
+	bindsym $mod+5 workspace number 5
+	bindsym $mod+6 workspace number 6
+	bindsym $mod+7 workspace number 7
+	bindsym $mod+8 workspace number 8
+	bindsym $mod+9 workspace number 9
+	bindsym $mod+0 workspace number 10
 
 	# move focused container to workspace
-	bindsym $mod+Shift+1 move container to workspace number $ws1
-	bindsym $mod+Shift+2 move container to workspace number $ws2
-	bindsym $mod+Shift+3 move container to workspace number $ws3
-	bindsym $mod+Shift+4 move container to workspace number $ws4
-	bindsym $mod+Shift+5 move container to workspace number $ws5
-	bindsym $mod+Shift+6 move container to workspace number $ws6
-	bindsym $mod+Shift+7 move container to workspace number $ws7
-	bindsym $mod+Shift+8 move container to workspace number $ws8
-	bindsym $mod+Shift+9 move container to workspace number $ws9
-	bindsym $mod+Shift+0 move container to workspace number $ws10
+	bindsym $mod+Shift+1 move container to workspace number 1
+	bindsym $mod+Shift+2 move container to workspace number 2
+	bindsym $mod+Shift+3 move container to workspace number 3
+	bindsym $mod+Shift+4 move container to workspace number 4
+	bindsym $mod+Shift+5 move container to workspace number 5
+	bindsym $mod+Shift+6 move container to workspace number 6
+	bindsym $mod+Shift+7 move container to workspace number 7
+	bindsym $mod+Shift+8 move container to workspace number 8
+	bindsym $mod+Shift+9 move container to workspace number 9
+	bindsym $mod+Shift+0 move container to workspace number 10
 
-	workspace 2 output HDMI1-1
-	workspace 3 output HDMI1-1
+	workspace 0 output eDP
+	workspace 1 output eDP
+	workspace 2 output eDP
+	workspace 3 output eDP
+	workspace 4 output HDMI-1-0
+	workspace 5 output HDMI-1-0
+	workspace 6 output HDMI-1-0
+	workspace 7 output HDMI-1-0
+	workspace 8 output HDMI-1-0
+	workspace 9 output HDMI-1-0
 
 	# move to another workspace
 	bindsym Ctrl+$alt+l workspace next
@@ -132,17 +130,20 @@
 	bindsym $mod+Shift+r restart
 
 	# Power manager ----- #
+	set $Locker i3lock && sleep 1
+
 	set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 	mode "$mode_system" {
-	  bindsym l exec --no-startup-id i3exit lock, mode "default"
-	  bindsym e exec --no-startup-id i3exit logout, mode "default"
-	  bindsym s exec --no-startup-id i3exit suspend, mode "default"
-	  bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-	  bindsym r exec --no-startup-id i3exit reboot, mode "default"
-	  bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+	    bindsym l exec --no-startup-id $Locker, mode "default"
+	    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+	    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+	    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+	    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+	    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
 
-	  bindsym Return mode "default"
-	  bindsym Escape mode "default"
+	    # back to normal: Enter or Escape
+	    bindsym Return mode "default"
+	    bindsym Escape mode "default"
 	}
 	bindsym $alt+q mode "$mode_system"
 
@@ -187,13 +188,54 @@
 	    }
 	}
 
+	# multimedia key binding ----- #
+	#rk61 uses ALT + fn
+	bindsym Mod1+Mod2+equal $exe pactl -- set-sink-volume 0 +2.5% && $refresh_i3status
+	bindsym Mod1+Mod2+minus $exe pactl -- set-sink-volume 0 -2.5% && $refresh_i3status
+	bindsym Mod1+Mod2+0 $exe pactl set-sink-mute 0 toggle && $refresh_i3status
 
-	# Use pactl to adjust volume in PulseAudio.
-	set $refresh_i3status killall -SIGUSR1 i3status-rs
-	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-	bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+	bindsym Mod1+Mod2+9 exec --no-startup-id playerctl next 
+	bindsym Mod1+Mod2+8 exec --no-startup-id playerctl play-pause
+	bindsym Mod1+Mod2+7 exec --no-startup-id playerctl previous
+
+	bindsym Mod1+Mod2+6 $exe /usr/bin/flameshot gui
+	bindsym Mod1+Mod2+5 $exe spotify
+	bindsym Mod1+Mod2+4 $exe speedcrunch
+	bindsym Mod1+Mod2+2 $exe firefox
+
+
+	bindsym XF86AudioRaiseVolume $exe pactl -- set-sink-volume 0 +2.5% && $refresh_i3status
+	bindsym XF86AudioLowerVolume $exe pactl -- set-sink-volume 0 -2.5% && $refresh_i3status
+	bindsym XF86AudioMute $exe pactl set-sink-mute 0 toggle && $refresh_i3status
+
+	bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+	bindsym XF86AudioNext exec --no-startup-id playerctl next 
+	bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+
+	bindsym Print                $exe /usr/bin/flameshot gui
+	bindsym XF86MonBrightnessUp $exe xbacklight -inc 10
+	bindsym XF86MonBrightnessDown $exe xbacklight -dec 10
+	bindsym XF86Search $exe firefox
+	bindsym XF86Calculator $exe speedcrunch
+
+# initialization
+	$exe_always picom
+	$exe_always flameshot
+	$exe_always dunst
+	$exe_always xset b off
+	$exe_always nitrogen --restore
+	# side-left
+	$exe_always xrandr --output eDP --primary --mode 1920x1080 --pos 1600x0 --rotate normal --output DisplayPort-0 --off --output DisplayPort-1 --off --output DisplayPort-2 --off --output DisplayPort-3 --off --output DisplayPort-4 --off --output DisplayPort-5 --off --output DisplayPort-6 --off --output DisplayPort-7 --off --output HDMI-1-0 --mode 1600x900 --pos 0x0 --rotate normal
+	$exe nm-applet
+	$exe_always thunar --daemon
+	$exe_always setxkbmap -model abnt -layout us -variant intl
+	font pango:FiraCode Mono 9
     '';
   };
 }
+
+
+
+
+
+

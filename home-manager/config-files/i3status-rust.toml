@@ -7,11 +7,6 @@ icons="awesome6"
 music = "\uf144"
 
 [[block]]
-block = "backlight"
-minimum = 15
-maximum = 100
-
-[[block]]
 block = "memory"
 
 [[block]]

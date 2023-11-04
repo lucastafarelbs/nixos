@@ -1,14 +1,14 @@
 { inputs, config, pkgs, callPackage, lib, ... }:
 
-let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload"  ''
-  export __NV_PRIME_RENDER_OFFLOAD=1
-  export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-  export __GLX_VENDOR_LIBRARY_NAME=nvidia
-  export __VK_LAYER_NV_optimus=NVIDIA_only
-  exec "$@"
-  '';
-in
+# let
+#  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload"  ''
+#  export __NV_PRIME_RENDER_OFFLOAD=1
+#  export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+#  export __GLX_VENDOR_LIBRARY_NAME=nvidia
+#  export __VK_LAYER_NV_optimus=NVIDIA_only
+#  exec "$@"
+#  '';
+#in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -21,21 +21,23 @@ in
     driSupport = true;
     driSupport32Bit = true;
   };
+
+  # services.xserver.videoDrivers = [ "amdgpu"];
   # enabling amdgpu and nvidia
-  services.xserver.videoDrivers = [ "amdgpu" "nvidia"];
-  hardware.nvidia = {
+   services.xserver.videoDrivers = [ "amdgpu" "nvidia"];
+   hardware.nvidia = {
     # Modesetting is required following nixos docs
     modesetting.enable = true;
 
     powerManagement = {
-	enable = true;
-	finegrained = true;
+        enable = true;
+        # finegrained = true;
     };
     # opensource kernel module (for newer gpus)
     open = true;
     prime = {
-      offload.enable = true;
-      offload.enableOffloadCmd = true;
+    #  offload.enable = true;
+    #  offload.enableOffloadCmd = true;
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:116:0:0";
     };
@@ -50,8 +52,6 @@ in
     font-awesome
     fira-code
   ];
-
-
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -86,7 +86,7 @@ in
   users.users.qolab = {
     isNormalUser = true;
     description = "qolab";
-    extraGroups = [ "networkmanager" "wheel" "power" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "power" "audio" "video" ];
     packages = with pkgs; [];
   };
 
@@ -105,11 +105,15 @@ in
     discord
     btop
     arandr
+    brightnessctl
+    xfce.thunar
   ];
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
-
+  
   # Enabling audio
+  sound.enable = false;
+  sound.mediaKeys.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

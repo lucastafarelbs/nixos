@@ -29,8 +29,12 @@
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
     playerctl #control play, pause, next, prev...
+    speechd
     lshw
     pciutils
+    pavucontrol
+    spotify
+    helvum
   ];
 
   # Enable home-manager and git
