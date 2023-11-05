@@ -1,5 +1,6 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+
 {
   inputs,
   outputs,
@@ -7,7 +8,11 @@
   config,
   pkgs,
   ...
-}: {
+}:
+let
+  gruvboxPlus = import ./gruvbox-plus.nix { inherit pkgs; };
+in
+{
   imports = [
     ./i3.nix
   ];
@@ -29,8 +34,6 @@
   # programs.neovim.enable = true;
   home.packages = with pkgs; [
     playerctl #control play, pause, next, prev...
-    speechd
-    lshw
     pciutils
     pavucontrol
     spotify
@@ -46,26 +49,33 @@
     userEmail = "lucastafarelbs@gmail.com";
   };
 
-  programs.neovim = {
-    viAlias = true;
-    vimAlias = true;
-  };
-
   # picom = transparency and corner radius
   services.picom = { 
     enable = true;
-    fade = true;
     inactiveOpacity = 0.85;
     activeOpacity = 1;
     settings = { 
       "corner-radius" = 5;
-      "fade-delta"   = 10;
-      "fade-in-step" = 0.13;
-      "fade-out-step"= 0.13;
     };
   };
   
   systemd.user.startServices = "sd-switch";
+
+  #theming
+  qt.enable = true;
+  qt.platformTheme = "gtk";
+  qt.style.name = "adwaita-dark";
+  qt.style.package = "pkgs.adwaita-qt";
+
+  gtk = {
+    enable = true;
+    cursorTheme.package = pkgs.bibata-cursors;
+    cursorTheme.name = "Bibata-Modern-Ice";
+    theme.package = pkgs.adw-gtk3;
+    theme.name = "adw-gtk3";
+    iconTheme.package = gruvboxPlus;
+    iconTheme.name = "GruvboxPlus";
+  };
 
   home.stateVersion = "23.05";
 }
