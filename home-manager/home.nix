@@ -35,6 +35,7 @@
     pavucontrol
     spotify
     helvum
+    gsimplecal
   ];
 
   # Enable home-manager and git

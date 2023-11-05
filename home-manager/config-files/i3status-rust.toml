@@ -8,6 +8,7 @@ music = "\uf144"
 
 [[block]]
 block = "memory"
+format = "$icon $mem_used/$mem_total"
 
 [[block]]
 block = "sound"
@@ -28,9 +29,7 @@ cmd = "gsimplecal"
 [[block]]
 block = "temperature"
 format = " $icon $average"
-#format_alt = " $icon $min min, $max max, $average avg "
 interval = 5
-chip = "*-isa-*"
 
 [[block]]
 block = "battery"
